@@ -1,5 +1,6 @@
 const categoryService = require('../services/category.service');
 const slugify = require('slugify');
+const ApiError =require('../utils/errorClass')
 
 module.exports.getAllCategories = async (req, res, next) => {
     const page = req.query.page * 1 || 1;
@@ -14,6 +15,10 @@ module.exports.getSpecificCategory = async (req, res, next) => {
 
     const categoryId = req.params.categoryId;
     const specificCategory = await categoryService.getCategoryByIdService(categoryId);
+    if(!specificCategory){
+        return next(new ApiError(`There is no category with this id :${categoryId}`),404)
+    }
+
     res.status(200).json({ status: "success", data: { specificCategory } });
 
 }
@@ -33,13 +38,19 @@ module.exports.updateOneCategory = async (req, res, next) => {
     const categoryId = req.params.categoryId;
     const updatedData = req.body;
     const updatedCategory = await categoryService.editCategoryService(categoryId, updatedData);
+    if(!updatedCategory){
+        return next(new ApiError(`There is no category with this id :${categoryId}`),404)
+    }
     res.status(200).json({ status: "success", data: { updatedCategory } });
 }
 
 module.exports.deleteOneCategory = async (req, res, next) => {
 
     const categoryId = req.params.categoryId;
-    await categoryService.deleteCategoryService(categoryId);
+    const deletedCategory= await categoryService.deleteCategoryService(categoryId);
+    if(!deletedCategory){
+        return next(new ApiError(`There is no category with this id :${categoryId}`),404)
+    }
     res.status(200).json({ status: "success", data: null });
 
 }

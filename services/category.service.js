@@ -1,4 +1,4 @@
-const Category = require('../data/category.model');
+const Category = require('../models/category.model');
 
 module.exports.getAllCategoriesService = async (limit, skip) => {
     return await Category.find({}).skip(skip).limit(limit);

@@ -27,8 +27,8 @@ const bootstrap = (app, express) => {
     app.use('/api/v1/categories', categoryRouter);
 
     app.use("*", (req, res, next) => {
-        const error = new ApiError(`In-valid Routing: ${req.originalUrl}`, 400);
-        next(error);
+        
+        next(new ApiError(`In-valid Routing: ${req.originalUrl}`,400));
     });
 
     // Global error handling

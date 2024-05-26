@@ -1,5 +1,6 @@
 const express = require('express')
 const asyncHandler = require('express-async-handler')
+const {validation} =require('../middelwares/validaitors/validation')
 
 const categoryRouter = express.Router()
 const {
@@ -9,17 +10,18 @@ const {
     updateOneCategory,
     deleteOneCategory
 } = require('../controller/category.controller')
+const { addCategoryValidation, updateCategoryValidation } = require('../middelwares/validaitors/category.validators')
 
 
 
 categoryRouter.route('/')
     .get(asyncHandler(getAllCategories))
-    .post(asyncHandler(createNewCategory));
+    .post(validation(addCategoryValidation), asyncHandler(createNewCategory));
 
 categoryRouter.route('/:categoryId')
     .delete(asyncHandler(deleteOneCategory))
     .get(asyncHandler(getSpecificCategory))
-    .put(asyncHandler(updateOneCategory))
+    .put(validation(updateCategoryValidation),asyncHandler(updateOneCategory))
 
 
 

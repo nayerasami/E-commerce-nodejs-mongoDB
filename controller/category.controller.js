@@ -36,11 +36,18 @@ module.exports.createNewCategory = async (req, res, next) => {
 module.exports.updateOneCategory = async (req, res, next) => {
 
     const categoryId = req.params.categoryId;
-    const updatedData = req.body;
-    const updatedCategory = await categoryService.editCategoryService(categoryId, updatedData);
-    if(!updatedCategory){
-        return next(new ApiError(`There is no category with this id :${categoryId}`),404)
+    const categoryName = req.body.categoryName;
+
+    const updatedData = { ...req.body };
+    if (categoryName) {
+        updatedData.slug = slugify(categoryName, { lower: true, strict: true });
     }
+   
+    const updatedCategory = await categoryService.editCategoryService(categoryId, updatedData);
+    if (!updatedCategory) {
+        return next(new ApiError(`There is no category with this id: ${categoryId}`, 404));
+    }
+
     res.status(200).json({ status: "success", data: { updatedCategory } });
 }
 

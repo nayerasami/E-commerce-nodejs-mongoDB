@@ -18,6 +18,7 @@ module.exports.editCategoryService = async (categoryId, updatedData) => {
     return await Category.findByIdAndUpdate(categoryId, updatedData, { new: true, runValidators: true });
 }
 
+
 module.exports.deleteCategoryService = async (categoryId) => {
     return await Category.findByIdAndDelete(categoryId);
 }

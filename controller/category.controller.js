@@ -37,7 +37,6 @@ module.exports.updateOneCategory = async (req, res, next) => {
 
     const categoryId = req.params.categoryId;
     const categoryName = req.body.categoryName;
-
     const updatedData = { ...req.body };
     if (categoryName) {
         updatedData.slug = slugify(categoryName, { lower: true, strict: true });

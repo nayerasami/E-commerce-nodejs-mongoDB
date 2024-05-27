@@ -26,10 +26,16 @@ module.exports.getSubCategoryById = async (req, res, next) => {
 
 
 module.exports.createNewSubCategory = async (req, res, next) => {
-    const name = req.body.name;
+    const {name,categoryId} = req.body;
     const subCategoryData = {
         name,
-        slug: slugify(name)
+        slug: slugify(name),
+        categoryId
+        
+    }
+       
+    if (!name || !categoryId) {
+        return res.status(400).json({ status: "error", message: "Name and categoryId are required" });
     }
     const newSubCategory = await subCategoryService.addNewSubCategoryService(subCategoryData)
     res.status(201).json({ status: "success", data: { newSubCategory } })

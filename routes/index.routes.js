@@ -16,10 +16,10 @@ const bootstrap = (app, express) => {
     const corsOptions = {
         origin: "*",
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        credentials: true // Enable credentials (cookies, HTTP authentication) cross-origin
+        credentials: true 
     };
     app.use(cors(corsOptions));
-
+    
     app.get('/', (req, res) => {
         res.send('OUR API V3');
     });

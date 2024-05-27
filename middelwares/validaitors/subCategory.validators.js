@@ -12,6 +12,6 @@ module.exports.updateSubCategoryValidator = joi.object().required().keys({
 
     name: joi.string().min(3).max(32).required().trim(),
     slug: joi.string().trim(),
-    categoryId: joi.string().required().trim()
+    categoryId: joi.string().trim().required()
 
 })

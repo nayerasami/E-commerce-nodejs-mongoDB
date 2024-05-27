@@ -15,10 +15,9 @@ module.exports.addNewSubCategoryService = async (subCategoryData) => {
     await newSubCategory.save()
     return newSubCategory;
 }
-
-module.exports.updateSubCategoryService = async (id, updatedDate) => {
-    return await SubCategory.findByIdAndUpdate(id, updatedDate, { new: true, runValidators: true })
-}
+module.exports.updateSubCategoryService = async (id, updatedData) => {
+  return await SubCategory.findByIdAndUpdate(id, updatedData, { new: true, runValidators: true });
+};
 
 module.exports.deleteSubCategoryService = async (id) => {
     return await SubCategory.findByIdAndDelete(id)

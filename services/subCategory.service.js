@@ -23,3 +23,6 @@ module.exports.deleteSubCategoryService = async (id) => {
     return await SubCategory.findByIdAndDelete(id)
 
 }
+module.exports.getSubCategoryByName =async(name)=>{
+    return await SubCategory.findOne({name})
+}

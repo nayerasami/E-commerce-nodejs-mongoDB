@@ -25,6 +25,10 @@ module.exports.getSpecificCategory = async (req, res, next) => {
 
 module.exports.createNewCategory = async (req, res, next) => {
     const categoryName = req.body.categoryName;
+    const existingCategory =await categoryService.getCategoryByName(categoryName)
+    if(existingCategory){
+        return next(new ApiError('this category is already exist',404))
+    }
     const newCategory = await categoryService.addNewCategoryService({
         categoryName,
         slug: slugify(categoryName)

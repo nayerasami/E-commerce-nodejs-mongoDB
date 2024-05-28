@@ -32,9 +32,9 @@ module.exports.createNewSubCategory = async (req, res, next) => {
         categoryId
         
     }
-       
-    if (!name || !categoryId) {
-        return res.status(400).json({ status: "error", message: "Name and categoryId are required" });
+    const existingSubCategory =await subCategoryService.getSubCategoryByName(name)
+    if(existingSubCategory){
+        return next(new ApiError('this subcategory is already exist',404))
     }
     const newSubCategory = await subCategoryService.addNewSubCategoryService(subCategoryData)
     res.status(201).json({ status: "success", data: { newSubCategory } })
@@ -62,7 +62,7 @@ module.exports.deleteSubCategory = async (req, res, next) => {
     const subCategoryId = req.params.id
     const deletedSubCategory = await subCategoryService.deleteSubCategoryService(subCategoryId)
     if (!deletedSubCategory) {
-        next(new ApiError('this subcategory is not found', 404))
+       return next(new ApiError('this subcategory is not found', 404))
     }
 
     res.status(200).json({ status: "success", data: null })

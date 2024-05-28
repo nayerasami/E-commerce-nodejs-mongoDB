@@ -22,3 +22,7 @@ module.exports.editCategoryService = async (categoryId, updatedData) => {
 module.exports.deleteCategoryService = async (categoryId) => {
     return await Category.findByIdAndDelete(categoryId);
 }
+
+module.exports.getCategoryByName =async(categoryName)=>{
+return await Category.findOne({categoryName})
+}

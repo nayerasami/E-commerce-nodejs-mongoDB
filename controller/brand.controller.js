@@ -15,8 +15,8 @@ module.exports.getAllBrands = async (req, res) => {
 module.exports.getBrandById = async (req, res, next) => {
     const { id } = req.params
     const brand = await brandsService.getSpecificBrandService(id)
-    console.log("brand",brand)
-    if (brand.length==0) {
+    console.log("brand", brand)
+    if (brand.length == 0) {
         return next(new ApiError('This brand is not found', 404));
     }
     res.status(200).json({ status: "success", data: { brand } })
@@ -25,9 +25,9 @@ module.exports.getBrandById = async (req, res, next) => {
 module.exports.addNewBrand = async (req, res, next) => {
     const { name } = req.body
     const brandData = { name, slug: slugify(name) }
-    const existingBrand =await brandsService.getBrandByName(name)
-    if(!existingBrand){
-      return  next(new ApiError('brand name already exists',404))
+    const existingBrand = await brandsService.getBrandByName(name)
+    if (!existingBrand) {
+        return next(new ApiError('brand name already exists', 404))
     }
     const newBrand = await brandsService.addNewBrandService(brandData)
     res.status(201).json({ status: "success", data: { newBrand } })
@@ -52,10 +52,10 @@ module.exports.updateBrand = async (req, res, next) => {
 }
 
 module.exports.deleteBrand = async (req, res, next) => {
-    const {id}=req.params;
-    const deletedBrand =await brandsService.deleteBrandService(id)
+    const { id } = req.params;
+    const deletedBrand = await brandsService.deleteBrandService(id)
     if (deletedBrand.deletedCount === 0) {
-      return  next(new ApiError('this brand is not found', 404))
+        return next(new ApiError('this brand is not found', 404))
     }
-    res.status(200).json({status:"success",data:null})
+    res.status(200).json({ status: "success", data: null })
 }

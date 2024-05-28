@@ -6,6 +6,7 @@ const categoryRouter = require('./category.routes');
 const ApiError = require('../utils/errorClass');
 const subCategoryRouter = require('./subCategory.routes');
 const brandsRouter = require('./brand.routes');
+const productRouter = require('./product.routes');
 
 const bootstrap = (app, express) => {
 
@@ -29,6 +30,8 @@ const bootstrap = (app, express) => {
     app.use('/api/v1/categories', categoryRouter);
     app.use('/api/v1/subcategories', subCategoryRouter);
     app.use('/api/v1/brands', brandsRouter);
+    app.use('/api/v1/products', productRouter);
+
 
 
     app.use("*", (req, res, next) => {

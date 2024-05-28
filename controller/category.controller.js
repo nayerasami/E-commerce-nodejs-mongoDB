@@ -16,7 +16,7 @@ module.exports.getSpecificCategory = async (req, res, next) => {
     const categoryId = req.params.categoryId;
     const specificCategory = await categoryService.getCategoryByIdService(categoryId);
     if(!specificCategory){
-        return next(new ApiError(`There is no category with this id :${categoryId}`),404)
+        return next(new ApiError('this category is not found',404))
     }
 
     res.status(200).json({ status: "success", data: { specificCategory } });
@@ -43,8 +43,8 @@ module.exports.updateOneCategory = async (req, res, next) => {
     }
    
     const updatedCategory = await categoryService.editCategoryService(categoryId, updatedData);
-    if (!updatedCategory) {
-        return next(new ApiError(`There is no category with this id: ${categoryId}`, 404));
+    if (updatedCategory.modifiedCount ===0) {
+        return next(new ApiError('this category is not found', 404));
     }
 
     res.status(200).json({ status: "success", data: { updatedCategory } });
@@ -55,7 +55,7 @@ module.exports.deleteOneCategory = async (req, res, next) => {
     const categoryId = req.params.categoryId;
     const deletedCategory= await categoryService.deleteCategoryService(categoryId);
     if(!deletedCategory){
-        return next(new ApiError(`There is no category with this id :${categoryId}`),404)
+        return next(new ApiError('this category is not found'),404)
     }
     res.status(200).json({ status: "success", data: null });
 

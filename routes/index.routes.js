@@ -5,6 +5,7 @@ const globalErrorHandling = require('../utils/errorHandling');
 const categoryRouter = require('./category.routes');
 const ApiError = require('../utils/errorClass');
 const subCategoryRouter = require('./subCategory.routes');
+const brandsRouter = require('./brand.routes');
 
 const bootstrap = (app, express) => {
 
@@ -27,6 +28,7 @@ const bootstrap = (app, express) => {
     // Set Up Routing
     app.use('/api/v1/categories', categoryRouter);
     app.use('/api/v1/subcategories', subCategoryRouter);
+    app.use('/api/v1/brands', brandsRouter);
 
 
     app.use("*", (req, res, next) => {

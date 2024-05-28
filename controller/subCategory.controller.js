@@ -1,7 +1,6 @@
 const subCategoryService = require('../services/subCategory.service')
 const slugify = require('slugify')
 const ApiError = require('../utils/errorClass');
-const { ConnectionClosedEvent } = require('mongodb');
 
 
 
@@ -19,7 +18,7 @@ module.exports.getSubCategoryById = async (req, res, next) => {
     const subCategoryId = req.params.id
     const subCategory = await subCategoryService.getSubCategoryByIdService(subCategoryId)
     if (!subCategory) {
-        next(new ApiError(`there is no subcategory with this id :${subCategoryId}`, 404))
+        next(new ApiError('this subcategory is not found', 404))
     }
     res.status(200).json({ status: "success", data: { subCategory } })
 }
@@ -52,8 +51,8 @@ module.exports.updateSubCategory = async (req, res, next) => {
     }
 
         const updatedSubCategory = await subCategoryService.updateSubCategoryService(subCategoryId, updatedData);
-        if (!updatedSubCategory) {
-            return next(new ApiError(`There is no subcategory with this id: ${subCategoryId}`, 404));
+        if (updatedSubCategory.modifiedCount===0) {
+            return next(new ApiError('this subcategory is not found', 404));
         }
         res.status(200).json({ status: "Success", data: { updatedSubCategory } });
 
@@ -63,7 +62,7 @@ module.exports.deleteSubCategory = async (req, res, next) => {
     const subCategoryId = req.params.id
     const deletedSubCategory = await subCategoryService.deleteSubCategoryService(subCategoryId)
     if (!deletedSubCategory) {
-        next(new ApiError(`there is no subcategory with this id :${subCategoryId}`, 404))
+        next(new ApiError('this subcategory is not found', 404))
     }
 
     res.status(200).json({ status: "success", data: null })

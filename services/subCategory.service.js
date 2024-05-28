@@ -16,13 +16,13 @@ module.exports.addNewSubCategoryService = async (subCategoryData) => {
     return newSubCategory;
 }
 module.exports.updateSubCategoryService = async (id, updatedData) => {
-    return await SubCategory.updateOne({_id:id},{$set:{...updatedData}});
+    return await SubCategory.updateOne({ _id: id }, { $set: { ...updatedData } });
 };
 
 module.exports.deleteSubCategoryService = async (id) => {
     return await SubCategory.findByIdAndDelete(id)
 
 }
-module.exports.getSubCategoryByName =async(name)=>{
-    return await SubCategory.findOne({name})
+module.exports.getSubCategoryByName = async (name) => {
+    return await SubCategory.findOne({ name })
 }

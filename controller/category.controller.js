@@ -1,6 +1,6 @@
 const categoryService = require('../services/category.service');
 const slugify = require('slugify');
-const ApiError =require('../utils/errorClass')
+const ApiError = require('../utils/errorClass')
 
 module.exports.getAllCategories = async (req, res, next) => {
     const page = req.query.page * 1 || 1;
@@ -15,8 +15,8 @@ module.exports.getSpecificCategory = async (req, res, next) => {
 
     const categoryId = req.params.categoryId;
     const specificCategory = await categoryService.getCategoryByIdService(categoryId);
-    if(!specificCategory){
-        return next(new ApiError('this category is not found',404))
+    if (!specificCategory) {
+        return next(new ApiError('this category is not found', 404))
     }
 
     res.status(200).json({ status: "success", data: { specificCategory } });
@@ -25,9 +25,9 @@ module.exports.getSpecificCategory = async (req, res, next) => {
 
 module.exports.createNewCategory = async (req, res, next) => {
     const categoryName = req.body.categoryName;
-    const existingCategory =await categoryService.getCategoryByName(categoryName)
-    if(existingCategory){
-        return next(new ApiError('this category is already exist',404))
+    const existingCategory = await categoryService.getCategoryByName(categoryName)
+    if (existingCategory) {
+        return next(new ApiError('this category is already exist', 404))
     }
     const newCategory = await categoryService.addNewCategoryService({
         categoryName,
@@ -45,9 +45,9 @@ module.exports.updateOneCategory = async (req, res, next) => {
     if (categoryName) {
         updatedData.slug = slugify(categoryName, { lower: true, strict: true });
     }
-   
+
     const updatedCategory = await categoryService.editCategoryService(categoryId, updatedData);
-    if (updatedCategory.modifiedCount ===0) {
+    if (updatedCategory.modifiedCount === 0) {
         return next(new ApiError('this category is not found', 404));
     }
 
@@ -57,9 +57,9 @@ module.exports.updateOneCategory = async (req, res, next) => {
 module.exports.deleteOneCategory = async (req, res, next) => {
 
     const categoryId = req.params.categoryId;
-    const deletedCategory= await categoryService.deleteCategoryService(categoryId);
-    if(!deletedCategory){
-        return next(new ApiError('this category is not found'),404)
+    const deletedCategory = await categoryService.deleteCategoryService(categoryId);
+    if (!deletedCategory) {
+        return next(new ApiError('this category is not found'), 404)
     }
     res.status(200).json({ status: "success", data: null });
 

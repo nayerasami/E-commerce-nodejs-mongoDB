@@ -25,16 +25,16 @@ module.exports.getSubCategoryById = async (req, res, next) => {
 
 
 module.exports.createNewSubCategory = async (req, res, next) => {
-    const {name,categoryId} = req.body;
+    const { name, categoryId } = req.body;
     const subCategoryData = {
         name,
         slug: slugify(name),
         categoryId
-        
+
     }
-    const existingSubCategory =await subCategoryService.getSubCategoryByName(name)
-    if(existingSubCategory){
-        return next(new ApiError('this subcategory is already exist',404))
+    const existingSubCategory = await subCategoryService.getSubCategoryByName(name)
+    if (existingSubCategory) {
+        return next(new ApiError('this subcategory is already exist', 404))
     }
     const newSubCategory = await subCategoryService.addNewSubCategoryService(subCategoryData)
     res.status(201).json({ status: "success", data: { newSubCategory } })
@@ -50,11 +50,11 @@ module.exports.updateSubCategory = async (req, res, next) => {
         updatedData.slug = slugify(name, { lower: true, strict: true });
     }
 
-        const updatedSubCategory = await subCategoryService.updateSubCategoryService(subCategoryId, updatedData);
-        if (updatedSubCategory.modifiedCount===0) {
-            return next(new ApiError('this subcategory is not found', 404));
-        }
-        res.status(200).json({ status: "Success", data: { updatedSubCategory } });
+    const updatedSubCategory = await subCategoryService.updateSubCategoryService(subCategoryId, updatedData);
+    if (updatedSubCategory.modifiedCount === 0) {
+        return next(new ApiError('this subcategory is not found', 404));
+    }
+    res.status(200).json({ status: "Success", data: { updatedSubCategory } });
 
 }
 
@@ -62,7 +62,7 @@ module.exports.deleteSubCategory = async (req, res, next) => {
     const subCategoryId = req.params.id
     const deletedSubCategory = await subCategoryService.deleteSubCategoryService(subCategoryId)
     if (!deletedSubCategory) {
-       return next(new ApiError('this subcategory is not found', 404))
+        return next(new ApiError('this subcategory is not found', 404))
     }
 
     res.status(200).json({ status: "success", data: null })

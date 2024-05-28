@@ -11,6 +11,7 @@ module.exports.addCategoryValidation=joi.object().required().keys({
 
 
 module.exports.updateCategoryValidation =joi.object().required().keys({
+    categoryId:joi.string(),
     categoryName:joi.string().min(3).max(32).required().trim(),
     slug:joi.string().trim() ,
     categoryImage:joi.string().trim()

@@ -1,7 +1,7 @@
 const SubCategory = require('../models/subCategory.model')
 
 
-module.exports.getAllSubCategoriesService = async (limit,skip) => {
+module.exports.getAllSubCategoriesService = async (limit, skip) => {
 
     return await SubCategory.find({}).skip(skip).limit(limit)
 }
@@ -16,7 +16,7 @@ module.exports.addNewSubCategoryService = async (subCategoryData) => {
     return newSubCategory;
 }
 module.exports.updateSubCategoryService = async (id, updatedData) => {
-  return await SubCategory.findByIdAndUpdate(id, updatedData, { new: true, runValidators: true });
+    return await SubCategory.updateOne({_id:id},{$set:{...updatedData}});
 };
 
 module.exports.deleteSubCategoryService = async (id) => {

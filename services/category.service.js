@@ -15,7 +15,7 @@ module.exports.addNewCategoryService = async (categoryData) => {
 }
 
 module.exports.editCategoryService = async (categoryId, updatedData) => {
-    return await Category.findByIdAndUpdate(categoryId, updatedData, { new: true, runValidators: true });
+    return await Category.updateOne({_id:categoryId},{$set:{...updatedData} },{ new: true, runValidators: true });
 }
 
 

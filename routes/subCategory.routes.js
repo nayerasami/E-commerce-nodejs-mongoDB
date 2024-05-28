@@ -14,7 +14,7 @@ subCategoryRouter.route('/')
 subCategoryRouter.route('/:id')
 .get(asyncHandler(subCategoryController.getSubCategoryById))
 .put(validation(updateSubCategoryValidator),asyncHandler(subCategoryController.updateSubCategory))
-.delete(asyncHandler(subCategoryController.deleteSubCategory))
+.delete(asyncHandler(subCategoryController.deleteSubCategory));
 
 
 module.exports =subCategoryRouter

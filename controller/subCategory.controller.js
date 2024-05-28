@@ -42,18 +42,21 @@ module.exports.createNewSubCategory = async (req, res, next) => {
 }
 
 module.exports.updateSubCategory = async (req, res, next) => {
+    const subCategoryId = req.params.id;
+    const name = req.body.name;
+    const categoryId = req.body.categoryId;
 
-    const subCategoryId = req.params.id
-    const name = req.body.name
-    const updatedData = { ...req.body };
+    const updatedData = { name, categoryId };
     if (name) {
         updatedData.slug = slugify(name, { lower: true, strict: true });
     }
-    const updatedSubCategory = await subCategoryService.updateSubCategoryService(subCategoryId, updatedData)
-    if (!updatedSubCategory) {
-        next(new ApiError(`there is no subcategory with this id :${subCategoryId}`, 404))
-    }
-    res.status(200).json({ status: "Success", data: { updatedSubCategory } })
+
+        const updatedSubCategory = await subCategoryService.updateSubCategoryService(subCategoryId, updatedData);
+        if (!updatedSubCategory) {
+            return next(new ApiError(`There is no subcategory with this id: ${subCategoryId}`, 404));
+        }
+        res.status(200).json({ status: "Success", data: { updatedSubCategory } });
+
 }
 
 module.exports.deleteSubCategory = async (req, res, next) => {

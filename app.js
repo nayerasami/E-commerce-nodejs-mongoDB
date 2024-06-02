@@ -1,9 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv');
+// const path =require('path')
 const bootstrap = require('./routes/index.routes');
 dotenv.config();
 
 const app = express();
+// app.use(express.static(path.join(__dirname,'./images')))
 bootstrap(app, express);
 
 // Express server

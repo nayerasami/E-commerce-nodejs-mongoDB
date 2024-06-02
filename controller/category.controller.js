@@ -1,6 +1,8 @@
 const categoryService = require('../services/category.service');
 const slugify = require('slugify');
 const ApiError = require('../utils/errorClass')
+const cloudinary = require('../config/cloudinary.config')
+
 
 module.exports.getAllCategories = async (req, res, next) => {
     const page = req.query.page * 1 || 1;
@@ -62,5 +64,26 @@ module.exports.deleteOneCategory = async (req, res, next) => {
         return next(new ApiError('this category is not found'), 404)
     }
     res.status(200).json({ status: "success", data: null });
+
+}
+
+module.exports.uploadCategoryImage = async (req, res, next) => {
+    const categoryId = req.params.categoryId
+    const category = await categoryService.getCategoryByIdService(categoryId)
+    if (!category) {
+        return res.status(404).json({ message: "Category not found" });
+    }
+
+    cloudinary.uploader.upload_stream(
+        { folder: 'categories' },
+        (error, result) => {
+            if (error) {
+                return next(error);
+            }
+            category.categoryImage = result.secure_url;
+            category.save();
+            res.status(200).json({ message: "Image uploaded successfully", category });
+        }
+    ).end(req.file.buffer);
 
 }

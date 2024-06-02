@@ -1,6 +1,7 @@
 const brandsService = require('../services/brand.service');
 const ApiError = require('../utils/errorClass')
 const slugify = require('slugify');
+const cloudinary = require('../config/cloudinary.config')
 
 
 module.exports.getAllBrands = async (req, res) => {
@@ -40,7 +41,6 @@ module.exports.updateBrand = async (req, res, next) => {
     if (name) {
         updatedData.slug = slugify(name, { lower: true, strict: true });
     }
-
     const newBrand = await brandsService.updateBrandService(id, updatedData);
 
     if (newBrand.modifiedCount === 0) {
@@ -58,4 +58,24 @@ module.exports.deleteBrand = async (req, res, next) => {
         return next(new ApiError('this brand is not found', 404))
     }
     res.status(200).json({ status: "success", data: null })
+}
+
+module.exports.uploadBrandImage = async (req, res, next) => {
+    const { id } = req.params;
+    const brand = await brandsService.getSpecificBrandService(id);
+    if (!brand) {
+        return next(new ApiError('This brand is not found', 404));
+    }
+    cloudinary.uploader.upload_stream(
+        { folder: 'brands' },
+        (error, result) => {
+            if (error) {
+                return next(error);
+            }
+            brand.image = result.secure_url;
+            brand.save();
+            res.status(200).json({ message: "Image uploaded successfully", brand });
+        }
+    ).end(req.file.buffer);
+
 }

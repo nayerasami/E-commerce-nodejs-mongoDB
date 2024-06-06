@@ -6,23 +6,23 @@ module.exports.getAllProductService =async(limit,skip)=>{
 
 }
 
-module.exports.getSpecificProductService =async(brandId)=>{
-    return await Product.find({_id:brandId})
+module.exports.getSpecificProductService =async(productId)=>{
+    return await Product.findById(productId)
 }
 
-module.exports.addNewProductService =async(brandData)=>{
-    const newBrand =new Product(brandData)
+module.exports.addNewProductService =async(productData)=>{
+    const newBrand =new Product(productData)
     await newBrand.save()
     return newBrand
 
 }
 
-module.exports.updateProductService =async(brandId,brandData)=>{
-    return await Product.updateOne({_id:brandId},{$set:{...brandData}})
+module.exports.updateProductService =async(productId,productData)=>{
+    return await Product.updateOne({_id:productId},{$set:{...productData}})
 }
 
-module.exports.deleteProductService =async(brandId)=>{
-    return await Product.deleteOne({_id:brandId})
+module.exports.deleteProductService =async(productId)=>{
+    return await Product.deleteOne({_id:productId})
 }
 
 module.exports.getProductByNameService= async(name)=>{

@@ -7,7 +7,7 @@ module.exports.getAllBrandsService =async(limit,skip)=>{
 }
 
 module.exports.getSpecificBrandService =async(brandId)=>{
-    return await Brands.find({_id:brandId})
+    return await Brands.findById(brandId)
 }
 
 module.exports.addNewBrandService =async(brandData)=>{

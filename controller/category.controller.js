@@ -82,7 +82,7 @@ module.exports.uploadCategoryImage = async (req, res, next) => {
             }
             category.categoryImage = result.secure_url;
             category.save();
-            res.status(200).json({ message: "Image uploaded successfully", category });
+            res.status(201).json({ message: "Image uploaded successfully", category });
         }
     ).end(req.file.buffer);
 

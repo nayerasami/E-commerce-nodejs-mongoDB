@@ -66,6 +66,7 @@ module.exports.uploadBrandImage = async (req, res, next) => {
     if (!brand) {
         return next(new ApiError('This brand is not found', 404));
     }
+
     cloudinary.uploader.upload_stream(
         { folder: 'brands' },
         (error, result) => {
@@ -73,9 +74,11 @@ module.exports.uploadBrandImage = async (req, res, next) => {
                 return next(error);
             }
             brand.image = result.secure_url;
+            console.log(brand.image)
             brand.save();
-            res.status(200).json({ message: "Image uploaded successfully", brand });
+            res.status(201).json({ message: "Image uploaded successfully", brand });
         }
     ).end(req.file.buffer);
+
 
 }

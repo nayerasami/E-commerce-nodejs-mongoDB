@@ -17,7 +17,7 @@ module.exports.getBrandById = async (req, res, next) => {
     const { id } = req.params
     const brand = await brandsService.getSpecificBrandService(id)
     console.log("brand", brand)
-    if (brand.length == 0) {
+    if (!brand) {
         return next(new ApiError('This brand is not found', 404));
     }
     res.status(200).json({ status: "success", data: { brand } })

@@ -7,10 +7,14 @@ const ApiError = require('../utils/errorClass');
 const subCategoryRouter = require('./subCategory.routes');
 const brandsRouter = require('./brand.routes');
 const productRouter = require('./product.routes');
-
+const cookieParser =require('cookie-parser');
+const authRouter = require('./auth.routes');
+const userRouter = require('./user.routes');
+const verifyToken =require('../middelwares/auth/isAuthorized')
 const bootstrap = (app, express) => {
 
     app.use(express.json());
+
     if (process.env.NODE_ENV === 'development') {
         app.use(morgan('dev'));
     }
@@ -22,16 +26,19 @@ const bootstrap = (app, express) => {
     };
     app.use(cors(corsOptions));
     
+    app.use(cookieParser());
+
     app.get('/', (req, res) => {
         res.send('OUR API V3');
     });
 
     // Set Up Routing
-    app.use('/api/v1/categories', categoryRouter);
-    app.use('/api/v1/subcategories', subCategoryRouter);
-    app.use('/api/v1/brands', brandsRouter);
-    app.use('/api/v1/products', productRouter);
-
+    app.use('/api/v1/auth',authRouter)
+    app.use('/api/v1/categories', verifyToken,categoryRouter);
+    app.use('/api/v1/subcategories',verifyToken, subCategoryRouter);
+    app.use('/api/v1/brands',verifyToken, brandsRouter);
+    app.use('/api/v1/products',verifyToken, productRouter);
+    app.use('/api/v1/user',verifyToken,userRouter)
 
 
     app.use("*", (req, res, next) => {
